@@ -74,8 +74,11 @@ app.post('/carts', function (req, res) {
   // console.log(req.body.products);
   
   // Generate a v1 (time-based) id 
-  const newCartId = uuid.v1();
-  // console.log('uuid: ' + newCartId);
+  let cartId = uuid.v1();
+  
+  if (req.body.cartId) {
+    cartId = req.body.cartId;
+  }
    
   let calculatedPrice = 0;
   let products = req.body.products;
@@ -85,7 +88,7 @@ app.post('/carts', function (req, res) {
   }
   
   let cart = {
-    cartId: newCartId,
+    cartId: cartId,
     products: products,
     summary: calculatedPrice
   };
