@@ -1,0 +1,36 @@
+{
+	"id": "5f20bda7-ebc1-95a1-b6da-b7c6de3a64aa",
+	"name": "Cart-Service",
+	"description": "",
+	"order": [
+		"fdb4404f-32b9-ae00-4955-8222e59addb8"
+	],
+	"folders": [],
+	"timestamp": 1458489263221,
+	"owner": "407348",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "fdb4404f-32b9-ae00-4955-8222e59addb8",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:3000/carts",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "5f20bda7-ebc1-95a1-b6da-b7c6de3a64aa",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Add to Cart",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1458489453313,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n    \"products\": [{\n        \"productId\": \"abc\",\n        \"quantity\": 2,\n        \"title\": \"Foobar\",\n        \"price\": 12.56 \n    }]\n}"
+		}
+	]
+}
