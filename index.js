@@ -37,20 +37,21 @@ let globalCarts = {}
 
 // Add all other service routes
 app.get('/carts/:cartId', (req, res) => {
-  // console.log('params: ' + req.params);
+  console.log(globalCarts);
+  console.log(req.params);
   
   res.send(JSON.stringify(globalCarts[req.params.cartId]));
 });
 
 app.post('/carts', function (req, res) {
-  // console.log(req.body);
+  console.log(req.body);
+  console.log(typeof req.body.cartId);
   // console.log(req.body.products);
   
-  // Generate a v1 (time-based) id 
-  let cartId = uuid.v1();
+  let cartId = req.body.cartId;
   
-  if (req.body.cartId) {
-    cartId = req.body.cartId;
+  if (typeof req.body.cartId === 'undefined') {
+    cartId = uuid.v1();
   }
    
   let calculatedPrice = 0;
@@ -65,7 +66,10 @@ app.post('/carts', function (req, res) {
     products: products,
     summary: calculatedPrice
   };
-  globalCarts[req.body.cartId] = cart;
+  
+  globalCarts[cartId] = cart;
+  
+   console.log(globalCarts);
   
   res.send(JSON.stringify(cart));
 });
