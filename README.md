@@ -1,6 +1,6 @@
-# example-service
+# cart-service
 
-This is a service example
+This is the cart service
 
 ## How to use
 
