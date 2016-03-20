@@ -5,6 +5,10 @@ const cors = require('cors');
 const endpoints = require('express-endpoints');
 const gracefulShutdown = require('http-graceful-shutdown');
 const agent = require('multiagent');
+const uuid = require('uuid');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 
 // Define some default values if not set in environment
 const PORT = process.env.PORT || 3000;
@@ -20,6 +24,8 @@ const app = express();
 
 // Add CORS headers
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add health check endpoint
 app.get(SERVICE_CHECK_HTTP, (req, res) => res.send({ uptime: process.uptime() }));
@@ -27,16 +33,64 @@ app.get(SERVICE_CHECK_HTTP, (req, res) => res.send({ uptime: process.uptime() })
 // Add metadata endpoint
 app.get(SERVICE_ENDPOINTS, endpoints());
 
-// Add all other service routes
-app.get('/superstars', (req, res) => {
-  res.send([
-    'Scarlett Johansson',
-    'Leonardo DiCaprio',
-    'Jennifer Lawrence',
-    'Ashton Kutcher',
-    'Kate Beckinsale',
-    'Robert Downey Jr.'
-  ]);
+              // Add all other service routes
+              // app.get('/superstars', (req, res) => {
+              //   res.send([
+              //     'Scarlett Johansson',
+              //     'Leonardo DiCaprio',
+              //     'Jennifer Lawrence',
+              //     'Ashton Kutcher',
+              //     'Kate Beckinsale',
+              //     'Robert Downey Jr.'
+              //   ]);
+              // });
+
+// // POST /carts{/:cartId}
+
+// // Request:
+// {
+//   products: [{
+//     productId: 'abc',
+//     quantity: 1,
+//     title: 'Foobar',
+//     price: 12.56 
+//   }]
+// }
+
+// // Response:
+// {
+//   cartId: '375cffch9g8w4hz',
+//   products: [{
+//     productId: 'abc',
+//     quantity: 1,
+//     title: 'Foobar',
+//     price: 12.56 
+//   }]
+// }
+
+
+app.post('/carts', function (req, res) {
+  // console.log(req.body);
+  // console.log(req.body.products);
+  
+  // Generate a v1 (time-based) id 
+  const newCartId = uuid.v1();
+  // console.log('uuid: ' + newCartId);
+   
+  let calculatedPrice = 0;
+  let products = req.body.products;
+  
+  for (let product of products) {
+    calculatedPrice = calculatedPrice + product.price;
+  }
+  
+  let cart = {
+    cartId: newCartId,
+    products: products,
+    summary: calculatedPrice
+  };
+  
+  res.send(JSON.stringify(cart));
 });
 
 // Start the server
