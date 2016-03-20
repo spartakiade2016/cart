@@ -33,6 +33,15 @@ app.get(SERVICE_CHECK_HTTP, (req, res) => res.send({ uptime: process.uptime() })
 // Add metadata endpoint
 app.get(SERVICE_ENDPOINTS, endpoints());
 
+let globalCarts = {}
+
+// Add all other service routes
+app.get('/carts/:cartId', (req, res) => {
+  // console.log('params: ' + req.params);
+  
+  res.send(JSON.stringify(globalCarts[req.params.cartId]));
+});
+
 app.post('/carts', function (req, res) {
   // console.log(req.body);
   // console.log(req.body.products);
@@ -56,6 +65,7 @@ app.post('/carts', function (req, res) {
     products: products,
     summary: calculatedPrice
   };
+  globalCarts[req.body.cartId] = cart;
   
   res.send(JSON.stringify(cart));
 });
